@@ -744,7 +744,7 @@ class Game {
         this.canvas.setAlpha(alpha);
 
         // Draw semi-transparent overlay
-        this.canvas.drawRectangle(0, 0, Config.CANVAS_WIDTH, Config.CANVAS_HEIGHT, 'rgba(0, 0, 0, 0.5)');
+        this.canvas.drawRect(0, 0, Config.CANVAS_WIDTH, Config.CANVAS_HEIGHT, 'rgba(0, 0, 0, 0.5)');
 
         // Draw message text
         const fontSize = 48;
