@@ -119,8 +119,8 @@ class EntityManager {
 
             entity.update(deltaTime);
 
-            // Remove if off-screen
-            if (entity.isOffScreen(canvasWidth, canvasHeight)) {
+            // Remove if off-screen (but NOT enemies - they should stay and bounce back)
+            if (entity.type !== 'enemy' && entity.isOffScreen(canvasWidth, canvasHeight)) {
                 entity.destroy();
             }
         }

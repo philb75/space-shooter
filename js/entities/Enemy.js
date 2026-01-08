@@ -114,6 +114,33 @@ class Enemy extends Entity {
             this.velocityY = this.speed;
         }
 
+        // Bounce back when reaching screen boundaries
+        const bounds = this.getBounds();
+        const canvasHeight = Config.CANVAS_HEIGHT;
+        const canvasWidth = Config.CANVAS_WIDTH;
+
+        // Bounce at bottom
+        if (bounds.bottom >= canvasHeight && this.velocityY > 0) {
+            this.velocityY = -Math.abs(this.velocityY);
+            this.y = canvasHeight - this.height; // Prevent getting stuck
+        }
+
+        // Bounce at top
+        if (bounds.top <= 0 && this.velocityY < 0) {
+            this.velocityY = Math.abs(this.velocityY);
+            this.y = 0; // Prevent getting stuck
+        }
+
+        // Bounce at sides
+        if (bounds.left <= 0 && this.velocityX < 0) {
+            this.velocityX = Math.abs(this.velocityX);
+            this.x = 0;
+        }
+        if (bounds.right >= canvasWidth && this.velocityX > 0) {
+            this.velocityX = -Math.abs(this.velocityX);
+            this.x = canvasWidth - this.width;
+        }
+
         // Update shooting cooldown
         if (this.canShoot) {
             this.lastShotTime += deltaTime;
