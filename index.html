@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Shooter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <!-- HUD Overlay -->
+        <div id="hud" class="hud hidden">
+            <div class="hud-section">
+                <span class="hud-label">SCORE:</span>
+                <span id="score" class="hud-value">0</span>
+            </div>
+            <div class="hud-section">
+                <span class="hud-label">WAVE:</span>
+                <span id="wave" class="hud-value">1</span>
+            </div>
+            <div class="hud-section">
+                <span class="hud-label">LIVES:</span>
+                <span id="lives" class="hud-value">3</span>
+            </div>
+            <div class="hud-section combo hidden">
+                <span class="hud-label">COMBO:</span>
+                <span id="combo" class="hud-value combo-text">x1</span>
+            </div>
+        </div>
+
+        <!-- Menu Screens -->
+        <div id="menuScreen" class="screen">
+            <h1 class="title">SPACE SHOOTER</h1>
+            <div class="menu-buttons">
+                <button id="startButton" class="menu-button">START GAME</button>
+                <button id="instructionsButton" class="menu-button">INSTRUCTIONS</button>
+                <button id="highScoresButton" class="menu-button">HIGH SCORES</button>
+            </div>
+        </div>
+
+        <div id="instructionsScreen" class="screen hidden">
+            <h2 class="title">INSTRUCTIONS</h2>
+            <div class="instructions-content">
+                <div class="instruction-group">
+                    <h3>CONTROLS</h3>
+                    <p><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> or <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> - Move</p>
+                    <p><kbd>SPACE</kbd> - Shoot</p>
+                    <p><kbd>P</kbd> - Pause</p>
+                </div>
+                <div class="instruction-group">
+                    <h3>POWER-UPS</h3>
+                    <p>🔫 Triple Shot - Fire three bullets at once</p>
+                    <p>⚡ Rapid Fire - Increase fire rate temporarily</p>
+                    <p>🛡️ Shield - Protect against one hit</p>
+                    <p>💣 Bomb - Clear all enemies on screen</p>
+                </div>
+                <div class="instruction-group">
+                    <h3>SCORING</h3>
+                    <p>Destroy enemies quickly to build combos!</p>
+                    <p>Higher combos = Higher multipliers</p>
+                </div>
+            </div>
+            <button id="backFromInstructions" class="menu-button">BACK</button>
+        </div>
+
+        <div id="highScoresScreen" class="screen hidden">
+            <h2 class="title">HIGH SCORES</h2>
+            <div id="highScoresList" class="high-scores-list">
+                <p class="no-scores">No high scores yet!</p>
+            </div>
+            <button id="backFromScores" class="menu-button">BACK</button>
+        </div>
+
+        <div id="pauseScreen" class="screen hidden">
+            <h2 class="title">PAUSED</h2>
+            <p class="pause-text">Press <kbd>P</kbd> to resume</p>
+            <button id="resumeButton" class="menu-button">RESUME</button>
+            <button id="quitButton" class="menu-button">QUIT TO MENU</button>
+        </div>
+
+        <div id="gameOverScreen" class="screen hidden">
+            <h2 class="title">GAME OVER</h2>
+            <div class="game-over-content">
+                <p class="final-score-label">FINAL SCORE</p>
+                <p id="finalScore" class="final-score">0</p>
+                <div id="newHighScore" class="new-high-score hidden">
+                    <p class="high-score-message">🎉 NEW HIGH SCORE! 🎉</p>
+                    <input type="text" id="playerName" placeholder="Enter your name" maxlength="15">
+                    <button id="submitScore" class="menu-button">SUBMIT</button>
+                </div>
+            </div>
+            <button id="restartButton" class="menu-button">PLAY AGAIN</button>
+            <button id="menuButton" class="menu-button">MAIN MENU</button>
+        </div>
+    </div>
+
+    <!-- Load all game modules -->
+    <script type="module" src="game.js"></script>
+</body>
+</html>
