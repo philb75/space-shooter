@@ -348,10 +348,50 @@ class Canvas {
             basic: { main: '#ff00ff', accent: '#cc00cc', dark: '#880088' },
             fast: { main: '#ff6600', accent: '#cc5500', dark: '#884400' },
             tank: { main: '#00ff00', accent: '#00cc00', dark: '#008800' },
-            zigzag: { main: '#ffff00', accent: '#cccc00', dark: '#888800' }
+            zigzag: { main: '#ffff00', accent: '#cccc00', dark: '#888800' },
+            boss: { main: '#ff0000', accent: '#cc0000', dark: '#880000' }
         };
 
         const color = colors[type] || colors.basic;
+
+        // Boss enemies get special rendering
+        if (type === 'boss') {
+            // Larger, more menacing design with weapons
+            ctx.fillStyle = color.main;
+            ctx.strokeStyle = color.dark;
+            ctx.lineWidth = 3;
+
+            // Main body (wider triangle)
+            ctx.beginPath();
+            ctx.moveTo(centerX, y + height); // Bottom point
+            ctx.lineTo(x, y); // Top left
+            ctx.lineTo(x + width, y); // Top right
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Cockpit (red glowing center)
+            ctx.fillStyle = '#ff0000';
+            ctx.shadowColor = '#ff0000';
+            ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.arc(centerX, y + height * 0.5, width * 0.15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Weapon turrets (left and right)
+            ctx.fillStyle = color.dark;
+            ctx.fillRect(x + width * 0.15, y + height * 0.6, width * 0.15, height * 0.25);
+            ctx.fillRect(x + width * 0.7, y + height * 0.6, width * 0.15, height * 0.25);
+
+            // Armor plating
+            ctx.strokeStyle = color.accent;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x + width * 0.2, y + height * 0.2, width * 0.6, height * 0.4);
+
+            ctx.restore();
+            return;
+        }
 
         // Main body (inverted triangle)
         ctx.fillStyle = color.main;

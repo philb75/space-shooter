@@ -48,6 +48,7 @@ class WavePatterns {
         return {
             enemies: [
                 { type: Config.ENEMY_TYPES.BASIC, count: 5, pattern: 'straight' },
+                { type: Config.ENEMY_TYPES.BOSS, count: 1, pattern: 'sineWave' },
             ],
             spawnDelay: 1000, // 1 second between spawns
             formation: 'line'
@@ -62,6 +63,7 @@ class WavePatterns {
             enemies: [
                 { type: Config.ENEMY_TYPES.BASIC, count: 4, pattern: 'sineWave' },
                 { type: Config.ENEMY_TYPES.FAST, count: 3, pattern: 'straight' },
+                { type: Config.ENEMY_TYPES.BOSS, count: 1, pattern: 'sineWave' },
             ],
             spawnDelay: 900,
             formation: 'scattered'
@@ -77,6 +79,7 @@ class WavePatterns {
                 { type: Config.ENEMY_TYPES.BASIC, count: 5, pattern: 'zigzag' },
                 { type: Config.ENEMY_TYPES.FAST, count: 3, pattern: 'sineWave' },
                 { type: Config.ENEMY_TYPES.TANK, count: 1, pattern: 'straight' },
+                { type: Config.ENEMY_TYPES.BOSS, count: 1, pattern: 'sineWave' },
             ],
             spawnDelay: 850,
             formation: 'mixed'
@@ -93,6 +96,7 @@ class WavePatterns {
                 { type: Config.ENEMY_TYPES.FAST, count: 4, pattern: 'zigzag' },
                 { type: Config.ENEMY_TYPES.ZIGZAG, count: 3, pattern: 'zigzag' },
                 { type: Config.ENEMY_TYPES.TANK, count: 1, pattern: 'sineWave' },
+                { type: Config.ENEMY_TYPES.BOSS, count: 1, pattern: 'zigzag' },
             ],
             spawnDelay: 800,
             formation: 'mixed'
@@ -109,6 +113,7 @@ class WavePatterns {
                 { type: Config.ENEMY_TYPES.FAST, count: 4, pattern: 'zigzag' },
                 { type: Config.ENEMY_TYPES.TANK, count: 3, pattern: 'straight' },
                 { type: Config.ENEMY_TYPES.ZIGZAG, count: 3, pattern: 'randomJitter' },
+                { type: Config.ENEMY_TYPES.BOSS, count: 1, pattern: 'sineWave' },
             ],
             spawnDelay: 750,
             formation: 'assault'
@@ -154,6 +159,11 @@ class WavePatterns {
                 {
                     type: Config.ENEMY_TYPES.ZIGZAG,
                     count: zigzagCount,
+                    pattern: patterns[Math.floor(Math.random() * patterns.length)]
+                },
+                {
+                    type: Config.ENEMY_TYPES.BOSS,
+                    count: 1,
                     pattern: patterns[Math.floor(Math.random() * patterns.length)]
                 },
             ],

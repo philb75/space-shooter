@@ -285,6 +285,9 @@ class Game {
             // Update all entities
             this.entityManager.update(deltaTime, Config.CANVAS_WIDTH, Config.CANVAS_HEIGHT);
 
+            // Update enemy shooting
+            this.updateEnemyShooting(deltaTime);
+
             // Check collisions
             this.collisionSystem.checkCollisions();
 
@@ -372,6 +375,36 @@ class Game {
                 });
             }
         }
+    }
+
+    /**
+     * Update enemy shooting
+     */
+    updateEnemyShooting(deltaTime) {
+        const enemies = this.entityManager.getEnemies();
+        const player = this.entityManager.getPlayer();
+
+        if (!player || !player.isAlive()) return;
+
+        enemies.forEach(enemy => {
+            if (enemy.canShoot) {
+                const bulletData = enemy.shoot();
+                if (bulletData) {
+                    // Create enemy bullet
+                    this.entityManager.addBullet(
+                        bulletData.x,
+                        bulletData.y,
+                        bulletData.velocityX,
+                        bulletData.velocityY,
+                        false, // isPlayerBullet = false for enemy bullets
+                        Config.BULLET_DAMAGE
+                    );
+
+                    // Play shoot sound (optional: different sound for enemy)
+                    this.audioSystem.playSound('shoot');
+                }
+            }
+        });
     }
 
     /**

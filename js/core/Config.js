@@ -129,7 +129,17 @@ const Config = {
         BASIC: 'basic',
         FAST: 'fast',
         TANK: 'tank',
-        ZIGZAG: 'zigzag'
+        ZIGZAG: 'zigzag',
+        BOSS: 'boss'
+    },
+
+    // Boss settings
+    BOSS: {
+        BASE_HEALTH: 5, // Base health for wave 1 boss
+        HEALTH_PER_WAVE: 3, // Additional health per wave
+        SIZE_MULTIPLIER: 2, // 2x larger than normal enemies
+        FIRE_RATE: 1500, // milliseconds between shots
+        SCORE_MULTIPLIER: 5 // 5x points of normal enemies
     },
 
     // Game states

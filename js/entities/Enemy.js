@@ -76,6 +76,29 @@ class Enemy extends Entity {
                 this.scoreValue = 200;
                 this.speed = Config.ENEMY_SPEED_BASE;
                 break;
+
+            case Config.ENEMY_TYPES.BOSS:
+                this.health = Config.BOSS.BASE_HEALTH;
+                this.maxHealth = Config.BOSS.BASE_HEALTH;
+                this.scoreValue = Config.SCORE_ENEMY_BASE * Config.BOSS.SCORE_MULTIPLIER;
+                this.speed = Config.ENEMY_SPEED_BASE * 0.5; // Slower movement
+                this.width = Config.ENEMY_SIZE.width * Config.BOSS.SIZE_MULTIPLIER;
+                this.height = Config.ENEMY_SIZE.height * Config.BOSS.SIZE_MULTIPLIER;
+                this.canShoot = true;
+                this.fireRate = Config.BOSS.FIRE_RATE;
+                break;
+        }
+    }
+
+    /**
+     * Set boss health based on wave number
+     */
+    setBossWave(waveNumber) {
+        if (this.enemyType === Config.ENEMY_TYPES.BOSS) {
+            const additionalHealth = (waveNumber - 1) * Config.BOSS.HEALTH_PER_WAVE;
+            this.health = Config.BOSS.BASE_HEALTH + additionalHealth;
+            this.maxHealth = this.health;
+            this.scoreValue = Config.SCORE_ENEMY_BASE * Config.BOSS.SCORE_MULTIPLIER * waveNumber;
         }
     }
 
@@ -103,8 +126,8 @@ class Enemy extends Entity {
     onRender(canvas) {
         canvas.drawEnemyShip(this.x, this.y, this.width, this.height, this.enemyType);
 
-        // Draw health bar for tanks
-        if (this.enemyType === Config.ENEMY_TYPES.TANK && this.health < this.maxHealth) {
+        // Draw health bar for tanks and bosses
+        if ((this.enemyType === Config.ENEMY_TYPES.TANK || this.enemyType === Config.ENEMY_TYPES.BOSS) && this.health < this.maxHealth) {
             this.renderHealthBar(canvas);
         }
     }
