@@ -40,6 +40,11 @@ class Enemy extends Entity {
         this.canShoot = false;
         this.fireRate = 2000; // 2 seconds
         this.lastShotTime = 0;
+
+        // Random movement system
+        this.randomMoveTimer = 0;
+        this.randomMoveInterval = 500 + Math.random() * 1000; // Change direction every 0.5-1.5 seconds
+        this.setRandomVelocity();
     }
 
     /**
@@ -103,48 +108,55 @@ class Enemy extends Entity {
     }
 
     /**
+     * Set random velocity in all directions
+     */
+    setRandomVelocity() {
+        // Random direction: up, down, left, right combinations
+        const angle = Math.random() * Math.PI * 2; // Random angle in radians
+        this.velocityX = Math.cos(angle) * this.speed;
+        this.velocityY = Math.sin(angle) * this.speed;
+    }
+
+    /**
      * Update enemy
      */
     onUpdate(deltaTime) {
-        // Apply movement pattern if set
-        if (this.movePattern) {
-            this.movePattern(this, deltaTime);
-        } else {
-            // Default: move straight down
-            this.velocityY = this.speed;
+        // Update random movement timer
+        this.randomMoveTimer += deltaTime;
+
+        // Change direction randomly at intervals
+        if (this.randomMoveTimer >= this.randomMoveInterval) {
+            this.randomMoveTimer = 0;
+            this.randomMoveInterval = 500 + Math.random() * 1000; // Next change in 0.5-1.5 seconds
+            this.setRandomVelocity();
         }
 
-        // Check screen boundaries and switch to random movement
+        // Check screen boundaries
         const bounds = this.getBounds();
-        const canvasHeight = Config.CANVAS_HEIGHT;
         const canvasWidth = Config.CANVAS_WIDTH;
+        const playerFloor = Config.PLAYER_START_Y - 50; // Don't go below this height (50px above player start)
 
-        // When hitting bottom, move randomly across screen
-        if (bounds.bottom >= canvasHeight && this.velocityY > 0) {
-            this.y = canvasHeight - this.height; // Prevent getting stuck
-
-            // Random movement: up with random horizontal velocity
-            this.velocityY = -this.speed * (0.5 + Math.random() * 0.5); // Move up
-            this.velocityX = this.speed * (Math.random() * 2 - 1); // Random horizontal direction
+        // Prevent going below player ship height
+        if (bounds.bottom >= playerFloor && this.velocityY > 0) {
+            this.y = playerFloor - this.height;
+            this.velocityY = -Math.abs(this.velocityY); // Bounce up
+            this.setRandomVelocity(); // Also change direction randomly
         }
 
-        // When hitting top, move down with random horizontal
+        // Bounce at top
         if (bounds.top <= 0 && this.velocityY < 0) {
             this.y = 0;
-            this.velocityY = this.speed * (0.5 + Math.random() * 0.5); // Move down
-            this.velocityX = this.speed * (Math.random() * 2 - 1); // Random horizontal
+            this.velocityY = Math.abs(this.velocityY); // Bounce down
         }
 
-        // When hitting sides, reverse horizontal and add vertical variation
+        // Bounce at sides
         if (bounds.left <= 0 && this.velocityX < 0) {
             this.x = 0;
-            this.velocityX = Math.abs(this.velocityX);
-            this.velocityY += this.speed * (Math.random() * 0.4 - 0.2); // Add vertical variation
+            this.velocityX = Math.abs(this.velocityX); // Bounce right
         }
         if (bounds.right >= canvasWidth && this.velocityX > 0) {
             this.x = canvasWidth - this.width;
-            this.velocityX = -Math.abs(this.velocityX);
-            this.velocityY += this.speed * (Math.random() * 0.4 - 0.2); // Add vertical variation
+            this.velocityX = -Math.abs(this.velocityX); // Bounce left
         }
 
         // Update shooting cooldown
@@ -238,6 +250,11 @@ class Enemy extends Entity {
         this.movePattern = null;
         this.patternData = {};
         this.lastShotTime = 0;
+
+        // Reset random movement
+        this.randomMoveTimer = 0;
+        this.randomMoveInterval = 500 + Math.random() * 1000;
+        this.setRandomVelocity();
     }
 }
 
