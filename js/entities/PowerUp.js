@@ -93,7 +93,7 @@ class PowerUp extends Entity {
      * Draw triple shot icon (three arrows up)
      */
     drawTripleShotIcon(canvas, halfSize) {
-        canvas.drawRectangle(-halfSize, -halfSize, this.width, this.height, '#0066ff');
+        canvas.drawRect(-halfSize, -halfSize, this.width, this.height, '#0066ff');
 
         // Three vertical lines
         canvas.ctx.fillStyle = '#00ffff';
@@ -119,7 +119,7 @@ class PowerUp extends Entity {
      * Draw rapid fire icon (speedlines)
      */
     drawRapidFireIcon(canvas, halfSize) {
-        canvas.drawRectangle(-halfSize, -halfSize, this.width, this.height, '#ff6600');
+        canvas.drawRect(-halfSize, -halfSize, this.width, this.height, '#ff6600');
 
         // Speed lines
         canvas.ctx.strokeStyle = '#ffaa00';
@@ -138,7 +138,7 @@ class PowerUp extends Entity {
      * Draw shield icon (hexagon shield)
      */
     drawShieldIcon(canvas, halfSize) {
-        canvas.drawRectangle(-halfSize, -halfSize, this.width, this.height, '#00aa00');
+        canvas.drawRect(-halfSize, -halfSize, this.width, this.height, '#00aa00');
 
         // Shield hexagon
         canvas.ctx.strokeStyle = '#00ff00';
@@ -174,7 +174,7 @@ class PowerUp extends Entity {
      * Draw bomb icon (circle with fuse)
      */
     drawBombIcon(canvas, halfSize) {
-        canvas.drawRectangle(-halfSize, -halfSize, this.width, this.height, '#660000');
+        canvas.drawRect(-halfSize, -halfSize, this.width, this.height, '#660000');
 
         // Bomb body (circle)
         canvas.ctx.fillStyle = '#000000';
