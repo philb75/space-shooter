@@ -57,6 +57,8 @@ class Enemy extends Entity {
                 this.maxHealth = 1;
                 this.scoreValue = 100;
                 this.speed = Config.ENEMY_SPEED_BASE;
+                this.canShoot = true;
+                this.fireRate = Config.ENEMY_FIRE_RATE_BASE; // 3 seconds
                 break;
 
             case Config.ENEMY_TYPES.FAST:
@@ -64,6 +66,8 @@ class Enemy extends Entity {
                 this.maxHealth = 1;
                 this.scoreValue = 150;
                 this.speed = Config.ENEMY_SPEED_BASE * 1.5;
+                this.canShoot = true;
+                this.fireRate = Config.ENEMY_FIRE_RATE_BASE * 0.8; // 2.4 seconds (faster shooting)
                 break;
 
             case Config.ENEMY_TYPES.TANK:
@@ -73,6 +77,8 @@ class Enemy extends Entity {
                 this.speed = Config.ENEMY_SPEED_BASE * 0.7;
                 this.width = 40;
                 this.height = 40;
+                this.canShoot = true;
+                this.fireRate = Config.ENEMY_FIRE_RATE_BASE * 1.2; // 3.6 seconds (slower shooting)
                 break;
 
             case Config.ENEMY_TYPES.ZIGZAG:
@@ -80,6 +86,8 @@ class Enemy extends Entity {
                 this.maxHealth = 2;
                 this.scoreValue = 200;
                 this.speed = Config.ENEMY_SPEED_BASE;
+                this.canShoot = true;
+                this.fireRate = Config.ENEMY_FIRE_RATE_BASE * 0.9; // 2.7 seconds
                 break;
 
             case Config.ENEMY_TYPES.BOSS:
@@ -90,7 +98,7 @@ class Enemy extends Entity {
                 this.width = Config.ENEMY_SIZE.width * Config.BOSS.SIZE_MULTIPLIER;
                 this.height = Config.ENEMY_SIZE.height * Config.BOSS.SIZE_MULTIPLIER;
                 this.canShoot = true;
-                this.fireRate = Config.BOSS.FIRE_RATE;
+                this.fireRate = Config.BOSS.FIRE_RATE; // 1.5 seconds (fastest)
                 break;
         }
     }
@@ -104,6 +112,22 @@ class Enemy extends Entity {
             this.health = Config.BOSS.BASE_HEALTH + additionalHealth;
             this.maxHealth = this.health;
             this.scoreValue = Config.SCORE_ENEMY_BASE * Config.BOSS.SCORE_MULTIPLIER * waveNumber;
+        }
+    }
+
+    /**
+     * Scale difficulty based on wave number (for all enemies)
+     */
+    setWaveDifficulty(waveNumber) {
+        if (waveNumber <= 1) return;
+
+        // Decrease fire rate (shoot faster) each wave
+        const fireRateReduction = (waveNumber - 1) * Config.ENEMY_FIRE_RATE_DECREMENT;
+        this.fireRate = Math.max(800, this.fireRate - fireRateReduction); // Minimum 0.8 seconds between shots
+
+        // Boss enemies get additional health scaling
+        if (this.enemyType === Config.ENEMY_TYPES.BOSS) {
+            this.setBossWave(waveNumber);
         }
     }
 

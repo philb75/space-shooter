@@ -31,6 +31,8 @@ const Config = {
     ENEMY_SPEED_INCREMENT: 10, // per wave
     ENEMY_HEALTH_BASE: 1,
     ENEMY_SIZE: { width: 32, height: 32 },
+    ENEMY_FIRE_RATE_BASE: 3000, // milliseconds between shots (slower for basic enemies)
+    ENEMY_FIRE_RATE_DECREMENT: 200, // decrease per wave (shoot faster each wave)
 
     // Bullet settings
     BULLET_SPEED: 500,

@@ -81,10 +81,8 @@ class SpawnSystem {
         // Create enemy
         const enemy = new Enemy(enemyData.x, enemyData.y, enemyData.type);
 
-        // Configure boss enemy with wave-scaled health
-        if (enemyData.type === Config.ENEMY_TYPES.BOSS) {
-            enemy.setBossWave(this.currentWave);
-        }
+        // Scale difficulty based on current wave (includes boss health and fire rates)
+        enemy.setWaveDifficulty(this.currentWave);
 
         // Apply wave speed multiplier
         const speedMultiplier = 1 + (this.currentWave - 1) * (Config.ENEMY_SPEED_INCREMENT / 100);
