@@ -797,14 +797,14 @@ class Game {
             const timerWidth = player.width;
             const timerProgress = this.buffTimers.shield / Config.POWERUP_DURATION.SHIELD;
 
-            this.canvas.drawRectangle(
+            this.canvas.drawRect(
                 player.x,
                 indicatorY,
                 timerWidth,
                 4,
                 'rgba(0, 0, 0, 0.5)'
             );
-            this.canvas.drawRectangle(
+            this.canvas.drawRect(
                 player.x,
                 indicatorY,
                 timerWidth * timerProgress,
@@ -820,14 +820,14 @@ class Game {
             const timerWidth = player.width;
             const timerProgress = this.buffTimers.rapidFire / Config.POWERUP_DURATION.RAPID_FIRE;
 
-            this.canvas.drawRectangle(
+            this.canvas.drawRect(
                 player.x,
                 indicatorY,
                 timerWidth,
                 4,
                 'rgba(0, 0, 0, 0.5)'
             );
-            this.canvas.drawRectangle(
+            this.canvas.drawRect(
                 player.x,
                 indicatorY,
                 timerWidth * timerProgress,
