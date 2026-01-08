@@ -114,31 +114,37 @@ class Enemy extends Entity {
             this.velocityY = this.speed;
         }
 
-        // Bounce back when reaching screen boundaries
+        // Check screen boundaries and switch to random movement
         const bounds = this.getBounds();
         const canvasHeight = Config.CANVAS_HEIGHT;
         const canvasWidth = Config.CANVAS_WIDTH;
 
-        // Bounce at bottom
+        // When hitting bottom, move randomly across screen
         if (bounds.bottom >= canvasHeight && this.velocityY > 0) {
-            this.velocityY = -Math.abs(this.velocityY);
             this.y = canvasHeight - this.height; // Prevent getting stuck
+
+            // Random movement: up with random horizontal velocity
+            this.velocityY = -this.speed * (0.5 + Math.random() * 0.5); // Move up
+            this.velocityX = this.speed * (Math.random() * 2 - 1); // Random horizontal direction
         }
 
-        // Bounce at top
+        // When hitting top, move down with random horizontal
         if (bounds.top <= 0 && this.velocityY < 0) {
-            this.velocityY = Math.abs(this.velocityY);
-            this.y = 0; // Prevent getting stuck
+            this.y = 0;
+            this.velocityY = this.speed * (0.5 + Math.random() * 0.5); // Move down
+            this.velocityX = this.speed * (Math.random() * 2 - 1); // Random horizontal
         }
 
-        // Bounce at sides
+        // When hitting sides, reverse horizontal and add vertical variation
         if (bounds.left <= 0 && this.velocityX < 0) {
-            this.velocityX = Math.abs(this.velocityX);
             this.x = 0;
+            this.velocityX = Math.abs(this.velocityX);
+            this.velocityY += this.speed * (Math.random() * 0.4 - 0.2); // Add vertical variation
         }
         if (bounds.right >= canvasWidth && this.velocityX > 0) {
-            this.velocityX = -Math.abs(this.velocityX);
             this.x = canvasWidth - this.width;
+            this.velocityX = -Math.abs(this.velocityX);
+            this.velocityY += this.speed * (Math.random() * 0.4 - 0.2); // Add vertical variation
         }
 
         // Update shooting cooldown
