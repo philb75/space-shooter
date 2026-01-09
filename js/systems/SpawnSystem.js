@@ -188,6 +188,8 @@ class SpawnSystem {
         this.hasBoss = this.wavePattern.hasBoss || false;
         this.bossSpawned = false;
 
+        console.log(`Wave pattern hasBoss: ${this.hasBoss}`);
+
         // Build enemy spawn queue (excluding boss - it spawns later)
         this.enemiesToSpawn = [];
         let enemyIndex = 0;
