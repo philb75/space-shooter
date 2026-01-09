@@ -237,7 +237,6 @@ class Enemy extends Entity {
         this.lastShotTime = 0;
 
         const center = this.getCenter();
-        console.log(`Enemy ${this.enemyType} shooting! Fire rate: ${this.fireRate}ms`);
         return {
             x: center.x - Config.BULLET_SIZE.width / 2,
             y: this.y + this.height,

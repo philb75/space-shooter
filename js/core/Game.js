@@ -386,11 +386,24 @@ class Game {
 
         if (!player || !player.isAlive()) return;
 
+        // Debug: Log enemy shooting status every 2 seconds
+        if (!this.lastEnemyShootLog) this.lastEnemyShootLog = 0;
+        this.lastEnemyShootLog += deltaTime;
+
+        if (this.lastEnemyShootLog >= 2000) {
+            console.log(`=== Enemy Shooting Status ===`);
+            console.log(`Enemies: ${enemies.length}`);
+            enemies.forEach((enemy, i) => {
+                console.log(`Enemy ${i} (${enemy.enemyType}): canShoot=${enemy.canShoot}, lastShotTime=${Math.floor(enemy.lastShotTime)}ms, fireRate=${enemy.fireRate}ms, ready=${enemy.lastShotTime >= enemy.fireRate}`);
+            });
+            this.lastEnemyShootLog = 0;
+        }
+
         enemies.forEach(enemy => {
             if (enemy.canShoot) {
                 const bulletData = enemy.shoot();
                 if (bulletData) {
-                    console.log('Creating enemy bullet:', bulletData);
+                    console.log('✓ Creating enemy bullet:', bulletData);
                     // Create enemy bullet
                     this.entityManager.addBullet(
                         bulletData.x,
