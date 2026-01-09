@@ -21,6 +21,10 @@ class SpawnSystem {
         this.spawnDelay = 1000;
         this.waveCompleteTimer = 0;
 
+        // Boss spawning
+        this.hasBoss = false;
+        this.bossSpawned = false;
+
         // Callbacks
         this.onWaveStart = null;
         this.onWaveComplete = null;
@@ -126,7 +130,16 @@ class SpawnSystem {
     checkWaveComplete() {
         const enemies = this.entityManager.getEnemies();
 
-        if (enemies.length === 0) {
+        // If wave has a boss and it hasn't been spawned yet, spawn it when all small enemies are dead
+        if (this.hasBoss && !this.bossSpawned && enemies.length === 0) {
+            console.log(`All small enemies defeated! Spawning boss for wave ${this.currentWave}...`);
+            this.spawnBoss();
+            this.bossSpawned = true;
+            return; // Don't complete wave yet
+        }
+
+        // Wave is complete when all enemies (including boss if present) are destroyed
+        if (enemies.length === 0 && (!this.hasBoss || this.bossSpawned)) {
             console.log(`Wave ${this.currentWave} complete!`);
             this.waveState = 'complete';
             this.waveCompleteTimer = 0;
@@ -171,7 +184,11 @@ class SpawnSystem {
         this.wavePattern = WavePatterns.getWavePattern(waveNumber);
         this.spawnDelay = this.wavePattern.spawnDelay;
 
-        // Build enemy spawn queue
+        // Set boss flags
+        this.hasBoss = this.wavePattern.hasBoss || false;
+        this.bossSpawned = false;
+
+        // Build enemy spawn queue (excluding boss - it spawns later)
         this.enemiesToSpawn = [];
         let enemyIndex = 0;
 
@@ -197,13 +214,37 @@ class SpawnSystem {
         // Shuffle for variety
         this.shuffleArray(this.enemiesToSpawn);
 
-        console.log(`Wave ${waveNumber}: ${this.enemiesToSpawn.length} enemies queued`);
+        console.log(`Wave ${waveNumber}: ${this.enemiesToSpawn.length} enemies queued${this.hasBoss ? ' + 1 boss (spawns later)' : ''}`);
         console.log(`Spawn delay: ${this.spawnDelay}ms`);
 
         // Trigger callback
         if (this.onWaveStart) {
             this.onWaveStart(waveNumber);
         }
+    }
+
+    /**
+     * Spawn boss enemy
+     */
+    spawnBoss() {
+        const canvasWidth = Config.CANVAS_WIDTH;
+        const enemyWidth = Config.ENEMY_SIZE.width * Config.BOSS.SIZE_MULTIPLIER;
+
+        // Spawn boss at center top
+        const x = (canvasWidth - enemyWidth) / 2;
+        const y = -enemyWidth;
+
+        const enemy = new Enemy(x, y, Config.ENEMY_TYPES.BOSS);
+        enemy.setWaveDifficulty(this.currentWave);
+
+        // Apply wave speed multiplier
+        const speedMultiplier = 1 + (this.currentWave - 1) * (Config.ENEMY_SPEED_INCREMENT / 100);
+        enemy.speed *= speedMultiplier;
+
+        // Add to entity manager
+        this.entityManager.addEnemy(enemy);
+
+        console.log(`Boss spawned for wave ${this.currentWave}!`);
     }
 
     /**
@@ -256,6 +297,8 @@ class SpawnSystem {
         this.enemiesToSpawn = [];
         this.spawnTimer = 0;
         this.waveCompleteTimer = 0;
+        this.hasBoss = false;
+        this.bossSpawned = false;
     }
 
     /**

@@ -39,7 +39,7 @@ class Enemy extends Entity {
         // Shooting (some enemies can shoot)
         this.canShoot = false;
         this.fireRate = 2000; // 2 seconds
-        this.lastShotTime = 0;
+        this.lastShotTime = Math.random() * 2000; // Random initial delay so enemies don't shoot in sync
 
         // Random movement system
         this.randomMoveTimer = 0;
@@ -158,9 +158,11 @@ class Enemy extends Entity {
         // Check screen boundaries
         const bounds = this.getBounds();
         const canvasWidth = Config.CANVAS_WIDTH;
-        const playerFloor = Config.PLAYER_START_Y - 50; // Don't go below this height (50px above player start)
+        const canvasHeight = Config.CANVAS_HEIGHT;
+        // Allow enemies to go down to half the player ship height
+        const playerFloor = Config.PLAYER_START_Y + (Config.PLAYER_SIZE.height / 2);
 
-        // Prevent going below player ship height
+        // Prevent going below player floor (half ship height)
         if (bounds.bottom >= playerFloor && this.velocityY > 0) {
             this.y = playerFloor - this.height;
             this.velocityY = -Math.abs(this.velocityY); // Bounce up
@@ -273,7 +275,7 @@ class Enemy extends Entity {
         this.startY = y;
         this.movePattern = null;
         this.patternData = {};
-        this.lastShotTime = 0;
+        this.lastShotTime = Math.random() * 2000; // Random initial delay
 
         // Reset random movement
         this.randomMoveTimer = 0;
