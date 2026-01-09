@@ -159,12 +159,10 @@ class Enemy extends Entity {
         const bounds = this.getBounds();
         const canvasWidth = Config.CANVAS_WIDTH;
         const canvasHeight = Config.CANVAS_HEIGHT;
-        // Allow enemies to go down to half the player ship height
-        const playerFloor = Config.PLAYER_START_Y + (Config.PLAYER_SIZE.height / 2);
 
-        // Prevent going below player floor (half ship height)
-        if (bounds.bottom >= playerFloor && this.velocityY > 0) {
-            this.y = playerFloor - this.height;
+        // Allow enemies to go all the way to the bottom (so they can touch player)
+        if (bounds.bottom >= canvasHeight && this.velocityY > 0) {
+            this.y = canvasHeight - this.height;
             this.velocityY = -Math.abs(this.velocityY); // Bounce up
             this.setRandomVelocity(); // Also change direction randomly
         }
