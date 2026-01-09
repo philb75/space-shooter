@@ -390,6 +390,7 @@ class Game {
             if (enemy.canShoot) {
                 const bulletData = enemy.shoot();
                 if (bulletData) {
+                    console.log('Creating enemy bullet:', bulletData);
                     // Create enemy bullet
                     this.entityManager.addBullet(
                         bulletData.x,
